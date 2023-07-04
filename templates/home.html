@@ -19,15 +19,15 @@
 
 	<canvas id="dealsPerMonthChart"></canvas>
 
-	<table class="table">
+	<table class="table deals-per-month">
 		<tr>
 			<th>Month</th>
 			<th>Number of deals</th>
 		</tr>
-	{% for key, value in deals_per_month.items() %}
+	{% for entry in deals_per_month %}
 	<tr>
-		<td>{{key}}</td>
-		<td>{{value}}</td>
+		<td>{{entry.month}}</td>
+		<td>{{entry.deals}}</td>
 	</tr>
 	{% endfor %}
 	</table>
@@ -38,11 +38,11 @@
 
 	<table class="table value-per-company">
 		<tr>
-			<th>No</th>
+			<th>No.</th>
 			<th>Customer</th>
 			<th>Value</th>
 		</tr>
-	{% for row in value_per_customer %}
+	{% for row in value_per_company %}
 	<tr>
 		<td>{{row.company}}</td>
 		<td>{{row.company_name}}</td>
@@ -54,7 +54,7 @@
 	<h2>Companies</h2>
 	<table class="table">
 		<tr>
-			<th>No</th>
+			<th>No.</th>
 			<th>Customer</th>
 			<th>Status</th>
 		</tr>

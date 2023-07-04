@@ -10,11 +10,11 @@ const renderDealsPerMonth = async () => {
         {
           type: 'pie',
           data: {
-              labels: Object.keys(data),
+              labels: data.map(e => e.month),
               datasets: [
                 {
                   label: 'Fully Rounded',
-                  data: Object.values(data),
+                  data: data.map(e => e.deals),
                   borderWidth: 2,
                   borderRadius: Number.MAX_VALUE,
                   borderSkipped: false,
@@ -68,7 +68,7 @@ const renderValuePerCompany = async () => {
                 text: 'Chart.js Bar Chart'
               }
             }
-          },
+          }
         }
     );
 }

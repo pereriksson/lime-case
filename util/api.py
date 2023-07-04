@@ -3,16 +3,16 @@ import json
 from dateutil.parser import *
 from datetime import *
 
-def get_value_per_customer():
+def get_value_per_company():
     all_deals = get_deals()
     won_deals_last_year = list(filter(deal_is_won_last_year, all_deals))
     all_companies = get_companies()
     value_per_customer = []
     for deal in won_deals_last_year:
-        index = next((i for i, item in enumerate(value_per_customer) if item["company"] == deal["company"]), None)
+        entry = next((item for item in value_per_customer if item["company"] == deal["company"]), None)
 
-        if index is not None:
-            value_per_customer[index]["value"] += deal["value"]
+        if entry is not None:
+            entry["value"] += deal["value"]
         else:
             company = next((item for item in all_companies if item["_id"] == deal["company"]), None)
             value_per_customer.append({
@@ -20,6 +20,7 @@ def get_value_per_customer():
                 "company_name": company["name"],
                 "value": deal["value"]
             })
+    value_per_customer = sorted(value_per_customer, key=lambda c: c["value"], reverse=True)
     return value_per_customer
 
 def deal_is_won_last_year(deal):
@@ -41,15 +42,22 @@ def get_deals_won_last_year_by_company(deal, company_id):
            deal["company"] == company_id
 
 def get_deals_per_month(won_deals_last_year):
-    deals_per_month = {}
+    deals_per_month = []
     for deal in won_deals_last_year:
         if not deal["closeddate"]:
             continue
         closed_month = parse(deal["closeddate"]).strftime("%B")
-        if closed_month in deals_per_month:
-            deals_per_month[closed_month] += 1
+        closed_month_number = parse(deal["closeddate"]).month
+        entry = next((item for item in deals_per_month if item["month_number"] == closed_month_number), None)
+        if entry is not None:
+            entry["deals"] += 1
         else:
-            deals_per_month[closed_month] = 1
+            deals_per_month.append({
+                "month": closed_month,
+                "month_number": closed_month_number,
+                "deals": 1
+            })
+    deals_per_month = sorted(deals_per_month, key=lambda d: d["deals"], reverse=True)
     return deals_per_month
 
 def get_companies():

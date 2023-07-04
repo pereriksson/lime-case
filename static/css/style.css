@@ -7,10 +7,30 @@
     text-align: right;
 }
 
-/* deals per month */
+/* cards */
+.card-group {
+    margin-bottom: 1rem;
+}
+.card-title {
+    font-size: .9rem;
+    margin: 0;
+    font-weight: normal;
+}
+.card-text {
+    font-size: 2rem;
+}
+
+/* charts */
 #dealsPerMonthChart,
 #valuePerCompanyChart {
     margin: 0 auto 1rem;
+}
+
+/* deals per month */
+.deals-per-month th:nth-child(2),
+.deals-per-month td:nth-child(2) {
+    width: 10rem;
+    text-align: right;
 }
 
 /* value per company */

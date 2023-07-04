@@ -3,7 +3,7 @@ from datetime import *
 import functools
 import locale
 from templates.filters import format_amount
-from util.api import get_companies, get_deals, get_deals_per_month, get_deals_won_by_company, get_deals_won_last_year_by_company, deal_is_won_last_year, get_value_per_customer
+from util.api import get_companies, get_deals, get_deals_per_month, get_deals_won_by_company, get_deals_won_last_year_by_company, deal_is_won_last_year, get_value_per_company
 
 locale.setlocale(locale.LC_ALL, 'sv_se')
 
@@ -16,7 +16,7 @@ app.jinja_env.filters["format_amount"] = format_amount
 
 @app.route('/valuePerCompany')
 def value_per_company():
-    return jsonify(get_value_per_customer())
+    return jsonify(get_value_per_company())
 
 @app.route('/dealsPerMonth')
 def deals_per_month():
@@ -25,7 +25,7 @@ def deals_per_month():
     return jsonify(get_deals_per_month(won_deals_last_year))
 
 @app.route('/')
-def example():
+def home():
     # Fetch data
     all_deals = get_deals()
     all_companies = get_companies()
@@ -38,7 +38,7 @@ def example():
     deals_per_month = get_deals_per_month(won_deals_last_year)
 
     # Total value of won all deals per customer last year
-    value_per_customer = get_value_per_customer()
+    value_per_company = get_value_per_company()
 
     # TODO: use relative dates
     updated_companies = all_companies
@@ -61,7 +61,7 @@ def example():
         last_year=datetime.now().year - 1,
         avg_deal_value=avg_deal_value,
         deals_per_month=deals_per_month,
-        value_per_customer=value_per_customer,
+        value_per_company=value_per_company,
         companies=all_companies
     )
 
