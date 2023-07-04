@@ -3,7 +3,7 @@ from datetime import *
 import functools
 import locale
 from templates.filters import format_amount
-from util.api import get_companies, get_deals, get_deals_per_month, get_deals_won_by_company, get_deals_won_last_year_by_company, deal_is_won_last_year, get_value_per_company
+from util.api import get_companies, get_deals, get_deals_per_month, deal_is_won_last_year, get_value_per_company, updated_company_statuses
 
 locale.setlocale(locale.LC_ALL, 'sv_se')
 
@@ -40,29 +40,14 @@ def home():
     # Total value of won all deals per customer last year
     value_per_company = get_value_per_company()
 
-    # TODO: use relative dates
-    updated_companies = all_companies
-    for company in updated_companies:
-        company_deals = list(filter(get_deals_won_by_company, all_deals))
-        company_deals_last_year = list(filter(lambda x: get_deals_won_last_year_by_company(x, company["_id"]), all_deals))
-
-        if company["buyingstatus"]["key"] == "notinterested":
-            status = "Not interested"
-        elif len(company_deals_last_year) > 0:
-            status = "Customer"
-        elif len(company_deals) > 0:
-            status = "Inactive"
-        elif len(company_deals) == 0:
-            status = "Prospect"
-        company["buyingstatus"]["key"] = status
+    updated_companies = updated_company_statuses()
 
     return render_template(
         "home.html",
-        last_year=datetime.now().year - 1,
         avg_deal_value=avg_deal_value,
         deals_per_month=deals_per_month,
         value_per_company=value_per_company,
-        companies=all_companies
+        updated_companies=updated_companies
     )
 
 

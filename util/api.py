@@ -2,6 +2,26 @@ import requests
 import json
 from dateutil.parser import *
 from datetime import *
+from dateutil.relativedelta import *
+
+def updated_company_statuses():
+    updated_companies = get_companies()
+    all_deals = get_deals()
+    for company in updated_companies:
+        company_deals = list(filter(lambda x: get_deals_won_by_company(x, company["_id"]), all_deals))
+        company_deals_last_year = list(
+            filter(lambda x: deal_is_won_in_the_last_year_by_company(x, company["_id"]), all_deals))
+
+        if company["buyingstatus"]["key"] == "notinterested":
+            status = "notinterested"
+        elif len(company_deals_last_year) > 0:
+            status = "customer"
+        elif len(company_deals) > 0:
+            status = "inactive"
+        elif len(company_deals) == 0:
+            status = "prospect"
+        company["new_status"] = status
+    return updated_companies
 
 def get_value_per_company():
     all_deals = get_deals()
@@ -26,19 +46,21 @@ def get_value_per_company():
 def deal_is_won_last_year(deal):
     if not deal["closeddate"]:
         return False
-    return deal["dealstatus"]["key"] == "agreement" and parse(deal["closeddate"]).year == datetime.now().year - 1
+    one_year_ago = datetime.now().replace(tzinfo=timezone(offset=timedelta())) - relativedelta(years=1)
+    return deal["dealstatus"]["key"] == "agreement" and parse(deal["closeddate"]) > one_year_ago
 
 
-def get_deals_won_by_company(deal):
+def get_deals_won_by_company(deal, company):
     if not deal["closeddate"]:
         return False
-    return deal["dealstatus"]["key"] == "agreement"
+    return deal["dealstatus"]["key"] == "agreement" and deal["company"] == company
 
 
-def get_deals_won_last_year_by_company(deal, company_id):
+def deal_is_won_in_the_last_year_by_company(deal, company_id):
     if not deal["closeddate"]:
         return False
-    return deal["dealstatus"]["key"] == "agreement" and parse(deal["closeddate"]).year == datetime.now().year - 1 and \
+    one_year_ago = datetime.now().replace(tzinfo=timezone(offset=timedelta())) - relativedelta(years=1)
+    return deal["dealstatus"]["key"] == "agreement" and parse(deal["closeddate"]) > one_year_ago and \
            deal["company"] == company_id
 
 def get_deals_per_month(won_deals_last_year):

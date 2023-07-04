@@ -1,15 +1,13 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-	<p style="color: red"><b>Doublecheck all numbers!</b></p>
-
 	<h2>Overview</h2>
 
 	<div class="card-group">
 		<div class="card">
 		  <img style="width: 200px;">
 		  <div class="card-body">
-		    <h5 class="card-title">Average deal value for {{last_year}}</h5>
+		    <h5 class="card-title">Average deal value for the last year</h5>
 		    <p class="card-text">{{ avg_deal_value|format_amount }}</p>
 		  </div>
 		</div>
@@ -56,13 +54,15 @@
 		<tr>
 			<th>No.</th>
 			<th>Customer</th>
-			<th>Status</th>
+			<th>Old status</th>
+			<th>New status</th>
 		</tr>
-	{% for row in companies %}
+	{% for row in updated_companies %}
 	<tr>
 		<td>{{row._id}}</td>
 		<td>{{row.name}}</td>
 		<td>{{row.buyingstatus.key}}</td>
+		<td>{{row.new_status}}</td>
 	</tr>
 	{% endfor %}
 	</table>
