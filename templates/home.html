@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+	<p style="color: red"><b>Doublecheck all numbers!</b></p>
+
+	<h2>Overview</h2>
+
+	<div class="card-group">
+		<div class="card">
+		  <img style="width: 200px;">
+		  <div class="card-body">
+		    <h5 class="card-title">Average deal value for {{last_year}}</h5>
+		    <p class="card-text">{{ avg_deal_value|format_amount }}</p>
+		  </div>
+		</div>
+	</div>
+
+	<h2>Deals per month</h2>
+
+	<canvas id="dealsPerMonthChart"></canvas>
+
+	<table class="table">
+		<tr>
+			<th>Month</th>
+			<th>Number of deals</th>
+		</tr>
+	{% for key, value in deals_per_month.items() %}
+	<tr>
+		<td>{{key}}</td>
+		<td>{{value}}</td>
+	</tr>
+	{% endfor %}
+	</table>
+
+	<h2>Value per company</h2>
+
+	<canvas id="valuePerCompanyChart"></canvas>
+
+	<table class="table value-per-company">
+		<tr>
+			<th>No</th>
+			<th>Customer</th>
+			<th>Value</th>
+		</tr>
+	{% for row in value_per_customer %}
+	<tr>
+		<td>{{row.company}}</td>
+		<td>{{row.company_name}}</td>
+		<td>{{row.value|format_amount}}</td>
+	</tr>
+	{% endfor %}
+	</table>
+
+	<h2>Companies</h2>
+	<table class="table">
+		<tr>
+			<th>No</th>
+			<th>Customer</th>
+			<th>Status</th>
+		</tr>
+	{% for row in companies %}
+	<tr>
+		<td>{{row._id}}</td>
+		<td>{{row.name}}</td>
+		<td>{{row.buyingstatus.key}}</td>
+	</tr>
+	{% endfor %}
+	</table>
+
+	<br>
+{% endblock %}

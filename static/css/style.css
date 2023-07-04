@@ -1,0 +1,26 @@
+.navbar-brand {
+    background: url(/static/images/logo.svg) no-repeat;
+    padding-left: 3rem;
+}
+
+.align-right {
+    text-align: right;
+}
+
+/* deals per month */
+#dealsPerMonthChart,
+#valuePerCompanyChart {
+    margin: 0 auto 1rem;
+}
+
+/* value per company */
+.value-per-company th:nth-child(1),
+.value-per-company td:nth-child(1) {
+    width: 5rem;
+}
+
+.value-per-company th:nth-child(3),
+.value-per-company td:nth-child(3) {
+    width: 8rem;
+    text-align: right;
+}
