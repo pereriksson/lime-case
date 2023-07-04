@@ -10,22 +10,20 @@ app = Flask(__name__, static_url_path='/static')
 # Filters
 app.jinja_env.filters["format_amount"] = format_amount
 
+api = Api()
+
 # JSON routes
 @app.route('/valuePerCompany')
 def value_per_company():
-    api = Api()
     return jsonify(api.get_value_per_company())
 
 @app.route('/dealsPerMonth')
 def deals_per_month():
-    api = Api()
     return jsonify(api.get_deals_per_month())
 
 # Server-side rendered
 @app.route('/')
 def home():
-    api = Api()
-
     avg_deal_value = api.get_avg_deal_value_for_last_year()
     deals_per_month = api.get_deals_per_month()
     value_per_company = api.get_value_per_company()
