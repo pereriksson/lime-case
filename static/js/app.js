@@ -2,7 +2,7 @@ const DATA_COUNT = 7;
 const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
 
 const renderDealsPerMonth = async () => {
-    const res = await fetch("http://localhost:5001/dealsPerMonth");
+    const res = await fetch("/dealsPerMonth");
     const data = await res.json();
 
     new Chart(
@@ -39,7 +39,7 @@ const renderDealsPerMonth = async () => {
 renderDealsPerMonth();
 
 const renderValuePerCompany = async () => {
-    const res = await fetch("http://localhost:5001/valuePerCompany");
+    const res = await fetch("/valuePerCompany");
     const data = await res.json();
 
     new Chart(
